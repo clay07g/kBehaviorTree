@@ -1,9 +1,10 @@
 plugins {
     kotlin("jvm") version "1.4.10"
+    publishing
 }
 
-group = "org.example"
-version = "1.0-SNAPSHOT"
+group = "com.claygillman"
+version = "1.0"
 
 repositories {
     mavenCentral()
@@ -17,4 +18,23 @@ dependencies {
 
 tasks.test {
     useJUnitPlatform()
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/clay07g/kBehaviorTree")
+            credentials {
+                username = System.getenv("GITHUB_ACTOR")
+                password = System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
+    publications {
+        create<MavenPublication>("kBehaviorTree") {
+            from(components["java"])
+            artifact(tasks["sourcesJar"])
+        }
+    }
 }
