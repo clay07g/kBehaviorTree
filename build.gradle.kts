@@ -1,10 +1,10 @@
 plugins {
     kotlin("jvm") version "1.4.10"
-    publishing
+    `maven-publish`
 }
 
 group = "com.claygillman"
-version = "1.0.2"
+version = "1.0.3"
 
 repositories {
     mavenCentral()
@@ -16,11 +16,25 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.0")
 }
 
+val sourcesJar = tasks.create<Jar>("sourcesJar") {
+    dependsOn(tasks.classes)
+    archiveClassifier.set("sources")
+    from(sourceSets.main.get().allSource)
+}
+
 tasks.test {
     useJUnitPlatform()
 }
 
 publishing {
+    publications {
+
+        create<MavenPublication>("kBehaviorTree") {
+            from(components["java"])
+            artifact(tasks["sourcesJar"])
+            artifactId = "kbehaviortree"
+        }
+    }
     repositories {
         maven {
             name = "GitHubPackages"
@@ -29,14 +43,6 @@ publishing {
                 username = System.getenv("GITHUB_ACTOR")
                 password = System.getenv("GITHUB_TOKEN")
             }
-        }
-    }
-    publications {
-        create<MavenPublication>("kBehaviorTree") {
-            from(components["java"])
-            artifact(tasks["sourcesJar"])
-            groupId = "clay07"
-            artifactId = "kBehaviorTree"
         }
     }
 }
