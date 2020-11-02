@@ -35,6 +35,7 @@ publishing {
         create<MavenPublication>("kBehaviorTree") {
             from(components["java"])
             artifact(tasks["sourcesJar"])
+            groupId = "kBehaviorTree"
         }
     }
 }
