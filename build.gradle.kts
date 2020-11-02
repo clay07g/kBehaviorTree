@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "com.claygillman"
-version = "1.0"
+version = "1.0.2"
 
 repositories {
     mavenCentral()
@@ -35,7 +35,8 @@ publishing {
         create<MavenPublication>("kBehaviorTree") {
             from(components["java"])
             artifact(tasks["sourcesJar"])
-            groupId = "kBehaviorTree"
+            groupId = "clay07"
+            artifactId = "kBehaviorTree"
         }
     }
 }
